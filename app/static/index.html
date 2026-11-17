@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="description" content="A private, local-first student placement prediction and career readiness workspace.">
+  <title>Placement Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Sora:wght@600;700;800&family=Space+Grotesk:wght@500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="stylesheet" href="/static/aurora.css">
+</head>
+<body>
+  <div id="backglass"><i class="bg1"></i><i class="bg2"></i><i class="bg3"></i><i class="ring"></i></div>
+  <canvas id="starfield"></canvas>
+  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
+  <div id="toastRoot" class="toast-root" aria-live="polite"></div>
+
+  <section id="welcome" class="welcome-screen">
+    <div class="welcome-glow"></div>
+    <div class="welcome-card">
+      <img class="hero-img" src="/static/img/career.svg" alt="Graduate cap over rising bars: your career growth"><div class="brand-mark large-mark"><span class="brand-symbol">P</span></div>
+      <p class="eyebrow">YOUR CAREER, WITH CLARITY</p>
+      <h1>Welcome to<br><span>Placement Intelligence.</span></h1>
+      <p class="welcome-copy">A thoughtful workspace to understand your placement readiness, identify skill gaps, and keep every analysis in one private place.</p>
+      <label class="field-label" for="welcomeName">What should we call you?</label>
+      <input id="welcomeName" class="text-input welcome-input" maxlength="60" placeholder="Enter your name" autocomplete="name">
+      <button id="enterWorkspace" class="button button-primary button-wide">Enter workspace <span>↗</span></button>
+      <p class="welcome-note">Local workspace · Your records stay on this device</p>
+    </div>
+    <div class="welcome-foot">PLACEMENT INTELLIGENCE <span>•</span> STUDENT CAREER ANALYTICS</div>
+  </section>
+
+  <div id="appShell" class="app-shell hidden">
+    <aside class="sidebar">
+      <div class="brand-lockup">
+        <div class="brand-mark"><span class="brand-symbol">P</span></div>
+        <div><div class="brand-name">placement<span>.</span></div><div class="brand-caption">INTELLIGENCE</div></div>
+      </div>
+      <div class="nav-label">WORKSPACE</div>
+      <nav class="side-nav" aria-label="Main navigation">
+        <button class="nav-link active" data-view="overview"><span class="nav-icon">◫</span><span>Overview</span><kbd>01</kbd></button>
+        <button class="nav-link" data-view="working"><span class="nav-icon">⌁</span><span>Work with a profile</span><kbd>02</kbd></button>
+        <button class="nav-link" data-view="world"><span class="nav-icon">◍</span><span>Globe · Base price</span><kbd>★</kbd></button>
+        <button class="nav-link" data-view="history"><span class="nav-icon">◷</span><span>History</span><kbd>03</kbd></button>
+        <button class="nav-link" data-view="settings"><span class="nav-icon">⚙</span><span>Settings</span><kbd>04</kbd></button>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-tip">
+        <div class="tip-icon">✳</div>
+        <div class="tip-title">Make progress visible.</div>
+        <p>Review your past predictions and keep your profile information up to date.</p>
+        <button class="text-link" data-go="working">Run an analysis <span>↗</span></button>
+      </div>
+      <div class="sidebar-bottom">
+        <div class="privacy-dot"></div><span>LOCAL DATA STORAGE</span>
+        <button id="sidebarTheme" class="icon-button theme-mini" title="Switch theme" aria-label="Switch theme">☼</button>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="breadcrumb"><span>Workspace</span><i>/</i><strong id="pageCrumb">Overview</strong></div>
+        <div class="topbar-actions">
+          <div class="model-status"><span class="status-dot"></span><span id="modelStatusText">Checking model</span></div>
+          <button id="topTheme" class="icon-button" title="Toggle light / dark theme" aria-label="Toggle theme">☼</button>
+          <button class="profile-chip" data-go="settings"><span class="avatar" id="avatarInitials">S</span><span id="topDisplayName">Student</span><span class="chevron">⌄</span></button>
+        </div>
+      </header>
+
+      <div id="viewContainer" class="view-container">
+        <section id="view-overview" class="view active-view">
+          <div class="page-heading heading-row">
+            <div><p class="eyebrow">YOUR PLACEMENT OVERVIEW</p><h1>Good to see you, <span id="greetingName">Student</span><span class="heading-period">.</span></h1><p class="page-description">A clear picture of your progress, your predictions, and what to work on next.</p></div>
+            <button class="button button-primary" data-go="working">＋ New analysis</button>
+          </div>
+
+          <div class="stat-grid">
+            <article class="stat-card stat-featured"><div class="stat-top"><span class="stat-label">TOTAL ANALYSES</span><span class="stat-icon purple-icon">◫</span></div><div class="stat-value" id="statAnalyses">0</div><div class="stat-foot"><span class="trend-neutral">Saved locally</span><span class="muted">All time</span></div><div class="stat-spark spark-one"></div></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-label">PREDICTED PLACED</span><span class="stat-icon green-icon">↗</span></div><div class="stat-value" id="statPlaced">0</div><div class="stat-foot"><span class="trend-positive">Model classification</span><span class="muted">Saved runs</span></div></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-label">AVERAGE PLACEMENT SCORE</span><span class="stat-icon blue-icon">◉</span></div><div class="stat-value"><span id="statProbability">—</span><small>%</small></div><div class="stat-foot"><span class="trend-neutral">Mean model estimate</span><span class="muted">Not a guarantee</span></div></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-label">AVERAGE SALARY ESTIMATE</span><span class="stat-icon amber-icon">₹</span></div><div class="stat-value stat-currency" id="statSalary">—</div><div class="stat-foot"><span class="trend-neutral">Among saved runs</span><span class="muted">Indicative only</span></div></article>
+          </div>
+
+          <div class="overview-grid">
+            <article class="panel chart-panel">
+              <div class="panel-heading"><div><p class="eyebrow">YOUR ACTIVITY</p><h2>Placement outlook</h2><p class="panel-subtitle">Estimated probability across your recent analyses</p></div><span class="chart-tag">RECENT HISTORY</span></div>
+              <div class="chart-wrap" id="overviewChart"><div class="empty-chart"><div class="empty-chart-icon">⌁</div><strong>Your trend will appear here</strong><span>Complete your first profile analysis to start tracking your progress.</span></div></div>
+              <div class="chart-legend"><span><i class="legend-dot"></i> Placement probability estimate</span><span id="chartPeriod">No saved runs yet</span></div>
+            </article>
+            <article class="panel model-panel">
+              <div class="panel-heading"><div><p class="eyebrow">MODEL PERFORMANCE</p><h2>Model health</h2><p class="panel-subtitle">Held-out validation metrics</p></div><span class="status-pill" id="modelHealthPill">Loading</span></div>
+              <div class="model-score-row"><div class="model-score" id="modelAccuracy">—</div><div><strong>Placement accuracy</strong><span>Test split accuracy</span></div></div>
+              <div class="metric-line"><div><span>Precision</span><b id="modelPrecision">—</b></div><div class="metric-track"><i id="precisionBar"></i></div></div>
+              <div class="metric-line"><div><span>Recall</span><b id="modelRecall">—</b></div><div class="metric-track"><i id="recallBar"></i></div></div>
+              <div class="metric-line"><div><span>F1 score</span><b id="modelF1">—</b></div><div class="metric-track"><i id="f1Bar"></i></div></div>
+              <div class="model-footnote" id="modelRows">Model metrics load from your local training data.</div>
+            </article>
+          </div>
+
+          <div class="lower-grid">
+            <article class="panel recent-panel">
+              <div class="panel-heading"><div><p class="eyebrow">RECENT ACTIVITY</p><h2>Latest analyses</h2></div><button class="text-link" data-go="history">View all history <span>↗</span></button></div>
+              <div id="recentList" class="recent-list"><div class="empty-list">Your saved analyses will show up here.</div></div>
+            </article>
+            <article class="panel resources-panel">
+              <div class="panel-heading"><div><p class="eyebrow">CAREER RESOURCES</p><h2>Useful next steps</h2></div><span class="resource-spark">✳</span></div>
+              <a class="resource-link" href="https://internship.aicte-india.org/internships" target="_blank" rel="noopener"><span class="resource-icon">↗</span><span><strong>AICTE National Internship Portal</strong><small>Explore internship opportunities in India</small></span><b>↗</b></a>
+              <a class="resource-link" href="https://www.nirfindia.org/Rankings/2025/EngineeringRanking.html" target="_blank" rel="noopener"><span class="resource-icon">◎</span><span><strong>NIRF Engineering Rankings</strong><small>Compare official institution ranking information</small></span><b>↗</b></a>
+              <p class="resource-disclaimer">External resources open separately. Their listings and ranking data are not automatically imported into this app.</p>
+            </article>
+          </div>
+          <div class="disclaimer-strip"><span>ⓘ</span><p>Predictions are estimates based on the training dataset included with this project. They are not guarantees of hiring outcomes. Keep your profile accurate and review the model's validation metrics.</p></div>
+        </section>
+
+        <section id="view-working" class="view">
+          <div class="page-heading"><img class="head-img" src="/static/img/resume.svg" alt="Resume with a checkmark"><p class="eyebrow">PROFILE WORKBENCH</p><h1>Build your <span>placement picture.</span></h1><p class="page-description">Upload a resume or enter your details manually. Verify every extracted value before predicting.</p></div>
+          <div class="work-layout">
+            <div class="work-main">
+              <article class="panel upload-panel">
+                <div class="panel-heading"><div><p class="eyebrow">STEP 01 · RESUME INPUT</p><h2>Start with your resume</h2><p class="panel-subtitle">Drop a file here or browse from your device.</p></div><span class="step-number">01</span></div>
+                <label id="resumeDrop" class="dropzone" for="resumeFile">
+                  <input id="resumeFile" type="file" accept=".pdf,.docx,.txt,.md,.rtf,.png,.jpg,.jpeg,.webp,.tif,.tiff,.bmp,.csv,.xlsx,.xls,.json,.html,.htm">
+                  <span class="upload-orbit"><span>↑</span></span>
+                  <strong id="dropTitle">Drop your resume here</strong>
+                  <span id="dropCaption">or <u>browse files</u> from your computer</span>
+                  <small>PDF · DOCX · TXT · MD · images · CSV · Excel · up to your configured limit</small>
+                </label>
+                <div id="parseStatus" class="parse-status hidden"></div>
+              </article>
+
+              <form id="profileForm" class="panel profile-panel">
+                <div class="panel-heading"><div><p class="eyebrow">STEP 02 · REVIEW YOUR PROFILE</p><h2>Student details</h2><p class="panel-subtitle">Fields left blank are imputed from the training data by the model.</p></div><span class="step-number">02</span></div>
+                <div class="form-grid">
+                  <div class="form-field full-field"><label for="candidateName">Candidate name</label><input class="text-input" id="candidateName" name="name" placeholder="Your full name" maxlength="100"></div>
+                  <div class="form-field"><label for="cgpa">CGPA <span>0–10</span></label><input class="text-input" type="number" id="cgpa" name="cgpa" min="0" max="10" step="0.01" placeholder="e.g. 8.2"></div>
+                  <div class="form-field"><label for="twelfth">12th / PUC percentage <span>0–100</span></label><input class="text-input" type="number" id="twelfth" name="twelfth" min="0" max="100" step="0.1" placeholder="e.g. 86"></div>
+                  <div class="form-field"><label for="tenth">10th / SSLC percentage <span>0–100</span></label><input class="text-input" type="number" id="tenth" name="tenth" min="0" max="100" step="0.1" placeholder="e.g. 91"></div>
+                  <div class="form-field"><label for="backlogs">Current / historical backlogs</label><input class="text-input" type="number" id="backlogs" name="backlogs" min="0" max="100" step="1" placeholder="e.g. 0"></div>
+                  <div class="form-divider"><span>Experience & practical work</span></div>
+                  <div class="form-field"><label for="majorProjects">Major projects</label><input class="text-input" type="number" id="majorProjects" name="major_projects" min="0" max="100" step="1" placeholder="Number of projects"></div>
+                  <div class="form-field"><label for="miniProjects">Mini projects</label><input class="text-input" type="number" id="miniProjects" name="mini_projects" min="0" max="100" step="1" placeholder="Number of projects"></div>
+                  <div class="form-field"><label for="workshops">Certifications / workshops</label><input class="text-input" type="number" id="workshops" name="workshops" min="0" max="100" step="1" placeholder="Number completed"></div>
+                  <div class="form-field"><label for="skillsCount">Number of technical skill groups</label><input class="text-input" type="number" id="skillsCount" name="skills_count" min="0" max="20" step="1" placeholder="Detected or entered skills"></div>
+                  <div class="form-field"><label for="communication">Communication rating <span>0–5</span></label><input class="text-input" type="number" id="communication" name="communication" min="0" max="5" step="0.1" placeholder="e.g. 4.2"></div>
+                  <div class="form-field"><label for="internship">Internship experience</label><select class="text-input" id="internship" name="internship"><option value="Unknown">Not specified</option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+                  <div class="form-field"><label for="hackathon">Hackathon participation</label><select class="text-input" id="hackathon" name="hackathon"><option value="Unknown">Not specified</option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+                </div>
+                <div class="skills-entry"><div><label for="skillsText">Detected / additional skills</label><p>Add or remove the skill names used for recommendations.</p></div><input class="text-input" id="skillsText" placeholder="Python, SQL, Machine Learning ..."></div>
+                <div class="form-actions"><button type="button" id="resetProfile" class="button button-quiet">Reset fields</button><button type="submit" id="analyzeButton" class="button button-primary">Generate placement analysis <span>↗</span></button></div>
+                <p class="form-small-note">You can run a prediction without uploading a resume. Numeric fields left blank will be handled by the model's median imputation.</p>
+              </form>
+
+              <section id="atsPanel" class="panel ats-panel"><div class="panel-heading"><div><p class="eyebrow">EXTRA · ATS & KEYWORDS</p><h2>Will a recruiter's software pass your resume?</h2><p class="panel-subtitle">Pick a target role. We check keywords and basic resume structure.</p></div></div>
+<div class="ats-controls"><select id="atsRole" class="text-input"></select><button id="atsRun" class="button button-primary">Check my resume ↗</button></div><div id="atsOut"></div></section>
+
+              <section id="analysisResult" class="panel result-panel hidden">
+                <div class="panel-heading"><div><p class="eyebrow">STEP 03 · YOUR ANALYSIS</p><h2>Placement outlook</h2></div><span class="status-pill" id="resultStatus">Complete</span></div>
+                <div class="result-hero">
+                  <div class="result-main"><span class="result-kicker">MODEL CLASSIFICATION</span><strong id="resultPrediction">Placed</strong><span id="resultSummary">Your profile was evaluated against the local training data.</span></div>
+                  <div class="probability-ring" id="probabilityRing"><div><strong id="resultProbability">0%</strong><small>PLACED</small></div></div>
+                </div>
+                <div class="result-metrics"><div><span>Indicative salary if placed</span><strong id="resultSalary">—</strong><small>Conditional model estimate</small></div><div><span>Resume readiness score</span><strong id="resultScore">—</strong><small>Rules-based checklist score</small></div><div><span>Saved history ID</span><strong id="resultId">—</strong><small>Stored in this workspace</small></div></div>
+                <div class="recommendation-grid"><div><h3>Skills to strengthen</h3><div id="missingSkills" class="chip-list"></div></div><div><h3>Project ideas</h3><div id="projectIdeas" class="suggestion-list"></div></div></div>
+                <div class="roadmap-block"><h3>Your next steps</h3><div id="roadmapList" class="roadmap-list"></div></div>
+                <div class="result-actions"><a id="reportDownload" class="button button-primary" href="#" target="_blank">Download PDF report ↓</a><button class="button button-primary" data-go="world">Explore your base price on the globe ↗</button><button id="cardBtn" class="button button-quiet">Download result card ↓</button><button class="button button-quiet" data-go="history">Open history</button></div>
+                <p class="result-disclaimer" id="resultNotice"></p>
+              </section>
+            </div>
+            <aside class="work-side">
+              <article class="panel process-panel"><p class="eyebrow">HOW IT WORKS</p><h2>From resume to roadmap.</h2><div class="process-steps"><div class="process-step"><span>01</span><div><strong>Extract</strong><p>Read key information from your document.</p></div></div><div class="process-step"><span>02</span><div><strong>Verify</strong><p>Correct the profile fields before prediction.</p></div></div><div class="process-step"><span>03</span><div><strong>Predict</strong><p>Run the placement and salary models.</p></div></div><div class="process-step"><span>04</span><div><strong>Improve</strong><p>Use skill gaps and suggested projects as a plan.</p></div></div></div></article>
+              <article class="panel field-guide"><img class="side-img" src="/static/img/skills.svg" alt="Skills and coding illustration"><div class="guide-icon">✳</div><h3>Accuracy starts with good inputs.</h3><p>Resume extraction is best-effort. CGPA, percentages, projects, internships, and backlogs should be checked manually. Missing numeric values are not silently replaced with arbitrary guesses.</p></article>
+              <article class="panel quick-model"><p class="eyebrow">CURRENT MODEL</p><div class="quick-model-line"><span>Training records</span><strong id="quickModelRows">—</strong></div><div class="quick-model-line"><span>Validation accuracy</span><strong id="quickModelAcc">—</strong></div><button class="text-link" data-go="settings">Manage training data <span>↗</span></button></article>
+            </aside>
+          </div>
+        </section>
+
+        <section id="view-world" class="view">
+          <div class="page-heading"><img class="head-img" src="/static/img/globe.svg" alt="Globe with a flight route"><p class="eyebrow">WORLD EXPLORER</p><h1>Where does your resume <span>earn the most?</span></h1><p class="page-description">Showing estimates for <b id="worldWho">—</b>. Rotate the globe, click a country, and see your base price, visa route and what to watch for.</p></div>
+          <div id="worldBanner" class="dataset-note hidden"><span>ⓘ</span><p>No analysis yet, so this uses a typical student profile. Upload a resume in “Work with a profile” to personalise it.</p></div>
+          <div class="world-grid">
+            <article class="panel globe-card">
+              <div class="globe-toolbar"><label>Colour by <select id="metricSel" class="text-input"><option value="gross_inr">Base price</option><option value="savings_inr">Left over after costs</option><option value="ease">Visa ease</option><option value="fit">Best fit (weights)</option></select></label><input id="countrySearch" class="text-input" list="countryList" placeholder="Jump to a country…" aria-label="Jump to a country"><datalist id="countryList"></datalist><button id="autoRot" class="pill-btn on">⟳ Auto-rotate</button><button id="cardBtn2" class="pill-btn">⬇ Result card</button></div>
+              <div class="globe-stage"><canvas id="globeCanvas" role="img" aria-label="Interactive 3D globe. Use the country search or the ranking list for keyboard access."></canvas><div id="globeTip" class="globe-tip"></div><div id="globeNote" class="globe-note">Loading map…</div><div class="legend-bar"></div><small>low → high</small></div>
+            </article>
+            <article class="panel country-panel" id="countryPanel"><p class="eyebrow">COUNTRY DETAILS</p><h2>Pick a country</h2><p class="panel-subtitle">Click any glowing pin or country on the globe. Countries without a pin show limited data.</p></article>
+          </div>
+          <div class="world-lower">
+            <article class="panel"><p class="eyebrow">BEST-FIT RANKING</p><h3>Top countries for you</h3>
+              <div id="weights"><div class="slider-row"><span>Pay</span><input type="range" min="0" max="100" value="40" data-w="pay"><span></span></div><div class="slider-row"><span>Left over</span><input type="range" min="0" max="100" value="40" data-w="save"><span></span></div><div class="slider-row"><span>Visa ease</span><input type="range" min="0" max="100" value="20" data-w="ease"><span></span></div></div>
+              <div id="rankList"></div></article>
+            <article class="panel"><p class="eyebrow">WHAT-IF SIMULATOR</p><h3>Change your profile, see the globe update</h3><div id="whatIf"></div></article>
+            <article class="panel"><p class="eyebrow">COMPARE</p><h3>Side by side</h3><div id="cmpBody"></div></article>
+          </div>
+          <div class="disclaimer-strip"><span>ⓘ</span><p id="worldDisclaimer"></p></div>
+        </section>
+
+        <section id="view-history" class="view">
+          <div class="page-heading heading-row"><div><p class="eyebrow">YOUR SAVED RECORDS</p><h1>History & <span>progress.</span></h1><p class="page-description">Every analysis is stored locally so you can compare your previous placement outlooks.</p></div><div class="heading-buttons"><a class="button button-quiet" href="/api/export/history?format=csv">Export CSV ↓</a><a class="button button-quiet" href="/api/export/history?format=json">Export JSON ↓</a></div></div>
+          <div class="history-summary" id="historySummary"></div>
+          <article class="panel cohort-panel"><div class="panel-heading"><div><p class="eyebrow">HISTORICAL TRAINING COHORT</p><h2>Previous placement outcomes</h2><p class="panel-subtitle">A snapshot of the outcomes in the dataset used to train this model.</p></div><span class="chart-tag">SOURCE DATA</span></div><div id="cohortSnapshot" class="cohort-grid"><div class="empty-list">Loading cohort data…</div></div><p class="cohort-note">These are the supplied dataset's historical labels, not live placement records from your college. Replace the training data in Settings to use another cohort.</p></article>
+          <div class="panel history-panel"><div class="history-toolbar"><div><h2>Analysis records</h2><p class="panel-subtitle">Select a record to inspect the profile and prediction details.</p></div><div class="history-tools"><input id="historySearch" class="text-input search-input" placeholder="Search candidate or file..."><button id="refreshHistory" class="button button-quiet">↻ Refresh</button></div></div><div class="table-scroll"><table class="history-table"><thead><tr><th>Candidate</th><th>Date</th><th>Prediction</th><th>Probability</th><th>Salary estimate</th><th>Resume score</th><th></th></tr></thead><tbody id="historyTableBody"><tr><td colspan="7" class="empty-table">No saved analyses yet. Start in Work with a profile.</td></tr></tbody></table></div><div class="history-bottom"><span id="historyCount">0 records</span><button id="clearHistory" class="text-link danger-link">Clear all history</button></div></div>
+          <div id="historyDetail" class="panel history-detail hidden"></div>
+        </section>
+
+        <section id="view-settings" class="view">
+          <div class="page-heading"><p class="eyebrow">WORKSPACE PREFERENCES</p><h1>Settings & <span>storage.</span></h1><p class="page-description">Choose how your workspace looks, manage local records, and update the training data.</p></div>
+          <div class="settings-layout">
+            <div class="settings-main">
+              <article class="panel settings-panel"><div class="panel-heading"><div><p class="eyebrow">PERSONAL PREFERENCES</p><h2>Workspace settings</h2><p class="panel-subtitle">These preferences are saved on this device.</p></div><span class="settings-icon">⚙</span></div>
+                <div class="setting-row"><div><strong>Display name</strong><p>Used in your workspace greeting and reports.</p></div><input id="settingName" class="text-input setting-control" maxlength="60" placeholder="Your name"></div>
+                <div class="setting-row"><div><strong>Appearance</strong><p>Switch between a dark and a light workspace.</p></div><div class="theme-options"><button class="theme-option active" data-theme-choice="dark"><span class="theme-swatch swatch-dark"></span>Dark</button><button class="theme-option" data-theme-choice="light"><span class="theme-swatch swatch-light"></span>Light</button></div></div>
+                <div class="setting-row"><div><strong>Maximum upload size</strong><p>Choose the file size limit for your local uploads.</p></div><select id="settingMaxUpload" class="text-input setting-control"><option value="10">10 MB</option><option value="25">25 MB</option><option value="50">50 MB</option><option value="100">100 MB</option><option value="200">200 MB</option></select></div>
+                <div class="setting-row"><div><strong>Keep original resume files</strong><p>When enabled, uploaded resumes are stored in your local file library.</p></div><label class="switch"><input id="settingStoreFiles" type="checkbox"><span class="switch-slider"></span></label></div>
+                <div class="setting-actions"><button id="saveSettings" class="button button-primary">Save preferences</button><span id="settingsSaved" class="save-feedback"></span></div>
+              </article>
+
+              <article class="panel settings-panel"><div class="panel-heading"><div><p class="eyebrow">TRAINING DATA</p><h2>Update the model datasets</h2><p class="panel-subtitle">Upload your own structured dataset to retrain the prediction models.</p></div><span class="settings-icon">▤</span></div>
+                <div class="dataset-note"><span>ⓘ</span><p>Your file must contain the model feature columns. Placement data also needs <b>PlacementStatus</b>; salary data needs <b>PlacementStatus</b> and <b>salary</b>. A failed update restores the previous dataset.</p></div>
+                <div class="dataset-upload-grid"><div class="dataset-upload-card"><label for="placementDataset">Placement dataset</label><input id="placementDataset" type="file" accept=".csv,.xlsx,.xls"><small>CSV or Excel · at least 20 rows</small><button id="uploadPlacementDataset" class="button button-quiet button-small">Upload & retrain</button></div><div class="dataset-upload-card"><label for="salaryDataset">Salary dataset</label><input id="salaryDataset" type="file" accept=".csv,.xlsx,.xls"><small>CSV or Excel · at least 20 placed salary records</small><button id="uploadSalaryDataset" class="button button-quiet button-small">Upload & retrain</button></div></div>
+                <div id="datasetStatus" class="dataset-status"></div>
+                <div class="current-model-data" id="settingsModelMetrics"></div>
+              </article>
+
+              <article class="panel settings-panel"><div class="panel-heading"><div><p class="eyebrow">FILE LIBRARY</p><h2>Your stored files</h2><p class="panel-subtitle">Store resumes, spreadsheets, reports, and other project files on this device.</p></div><span class="settings-icon">▧</span></div>
+                <label class="library-drop" for="libraryFile"><span class="library-plus">＋</span><span><strong>Upload a file to your library</strong><small>Any file type · saved locally · not executed by the app</small></span><input id="libraryFile" type="file"></label>
+                <div id="libraryList" class="library-list"><div class="empty-list">No files stored yet.</div></div>
+              </article>
+
+              <article class="panel settings-panel"><div class="panel-heading"><div><p class="eyebrow">BACKUP & CONTROL</p><h2>Manage your records</h2><p class="panel-subtitle">Export your history before clearing it.</p></div><span class="settings-icon">⛁</span></div>
+                <div class="backup-row"><div><strong>Download a complete history backup</strong><p>Save all analysis rows, profile inputs, and recommendations as JSON.</p></div><a class="button button-quiet" href="/api/export/history?format=json">Download backup ↓</a></div>
+                <div class="backup-row danger-zone"><div><strong>Delete all saved analysis history</strong><p>This removes saved prediction records and generated PDF reports. Stored files remain in the file library.</p></div><button id="settingsClearHistory" class="button button-danger">Delete history</button></div>
+                <div class="storage-location"><span class="privacy-dot"></span><div><strong>Local storage location</strong><p><code>data/placement_history.sqlite3</code> · <code>data/uploads/</code> · <code>data/reports/</code></p></div></div>
+              </article>
+            </div>
+            <aside class="settings-side"><article class="panel security-card"><div class="security-graphic">⌂</div><p class="eyebrow">PRIVATE BY DESIGN</p><h3>Your data stays on your machine.</h3><p>Analyses and uploads are stored in the local project folder. The app does not send your resume to a third-party AI service.</p><div class="security-rule"></div><div class="security-fact"><span>●</span><div><strong>SQLite history</strong><small>Searchable analysis records</small></div></div><div class="security-fact"><span>●</span><div><strong>Local file library</strong><small>Files remain in your data folder</small></div></div><div class="security-fact"><span>●</span><div><strong>Manual dataset updates</strong><small>You control the training inputs</small></div></div></article>
+              <article class="panel settings-side-note"><p class="eyebrow">MODEL TRANSPARENCY</p><h3>What does the percentage mean?</h3><p>The value is the model's estimated probability of the “Placed” class, not a guaranteed real-world chance. It may not be calibrated for your college or current hiring cycle.</p><button class="text-link" data-go="overview">View model metrics <span>↗</span></button></article></aside>
+          </div>
+        </section>
+      </div>
+      <footer class="app-footer"><span>PLACEMENT INTELLIGENCE <b>·</b> LOCAL-FIRST CAREER ANALYTICS</span><span>Built for thoughtful preparation <i>✳</i></span></footer>
+    </main>
+  </div>
+  <div id="modalLayer" class="modal-layer hidden"><div class="confirm-modal"><div class="modal-mark">!</div><h3 id="modalTitle">Are you sure?</h3><p id="modalText">This action cannot be undone.</p><div class="modal-actions"><button id="modalCancel" class="button button-quiet">Cancel</button><button id="modalConfirm" class="button button-danger">Confirm</button></div></div></div>
+  <script src="/static/vendor/d3-geo-bundle.js"></script>
+  <script src="/static/app.js"></script>
+  <script src="/static/globe.js"></script>
+  <script src="/static/fx.js"></script>
+  <script src="/static/extras.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.py[cod]
+.DS_Store
+Thumbs.db
+data/placement_history.sqlite3
+data/placement_history.sqlite3-shm
+data/placement_history.sqlite3-wal
+data/uploads/*
+!data/uploads/.gitkeep
+data/reports/*
+!data/reports/.gitkeep
+data/datasets/incoming_*
+data/datasets/backup_*

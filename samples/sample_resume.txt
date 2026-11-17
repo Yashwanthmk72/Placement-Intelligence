@@ -1,0 +1,201 @@
+ARJUN KUMAR
+
+B.Tech – Artificial Intelligence & Machine Learning
+Bengaluru, Karnataka, India
+Email: [arjun.kumar@example.com](mailto:arjun.kumar@example.com)
+Phone: +91 98765 43210
+
+CAREER OBJECTIVE
+
+Motivated Artificial Intelligence and Machine Learning student seeking a software engineering, machine learning, data science, or AI internship/full-time opportunity. Interested in developing practical machine learning solutions, solving programming problems, and building real-world applications.
+
+EDUCATION
+
+Bachelor of Technology – Artificial Intelligence & Machine Learning
+ABC Institute of Technology, Bengaluru
+2024 – 2028
+CGPA: 8.6 / 10
+
+12th / PUC
+ABC Pre-University College, Bengaluru
+12th Percentage: 87%
+
+10th / SSLC
+ABC High School, Bengaluru
+10th Percentage: 91%
+
+Backlogs: 0
+
+TECHNICAL SKILLS
+
+Python
+Java
+C++
+SQL
+Data Structures
+Algorithms
+Machine Learning
+Deep Learning
+Data Science
+Computer Vision
+OpenCV
+TensorFlow
+Keras
+Scikit-learn
+Pandas
+NumPy
+Matplotlib
+HTML
+CSS
+JavaScript
+Git
+GitHub
+MySQL
+
+PROJECTS
+
+Student Placement Prediction System
+
+Developed a machine learning system that predicts whether a student is likely to be placed using academic performance, technical skills, internships, projects, hackathons, communication skills, and other student attributes.
+
+Technologies: Python, Pandas, NumPy, Scikit-learn, Random Forest, Machine Learning.
+
+AI Resume Analyzer
+
+Built an AI-based resume analyzer that extracts candidate information, identifies technical skills, calculates a resume score, detects skill gaps, and provides personalized career recommendations.
+
+Technologies: Python, NLP, Machine Learning, Pandas, Gradio.
+
+Real-Time Object Detection
+
+Developed a computer vision application capable of detecting objects from a webcam using a deep-learning-based object detection model.
+
+Technologies: Python, OpenCV, YOLO, Computer Vision, Deep Learning.
+
+Student Management System
+
+Created a database-driven student management application for storing student information, academic records, and course information.
+
+Technologies: Java, OOP, MySQL, SQL.
+
+INTERNSHIP
+
+Machine Learning Intern
+XYZ Technologies, Bengaluru
+June 2026 – August 2026
+
+Worked with Python and Pandas for data preprocessing.
+
+Developed machine learning classification models.
+
+Used Scikit-learn for model training and evaluation.
+
+Performed exploratory data analysis.
+
+Created data visualizations using Matplotlib.
+
+Worked with Git and GitHub for version control.
+
+Internship: Yes
+
+CERTIFICATIONS AND WORKSHOPS
+
+Machine Learning with Python Certification
+
+Python for Data Science Certification
+
+SQL and Database Fundamentals Certification
+
+Computer Vision Workshop
+
+Artificial Intelligence Workshop
+
+Cloud Computing Fundamentals Workshop
+
+Certifications/Workshops: 6
+
+HACKATHONS
+
+National AI Hackathon 2026
+
+Participated in a team-based AI hackathon and developed a prototype AI application for automated resume analysis.
+
+College Innovation Hackathon
+
+Developed a machine-learning-based student career recommendation system.
+
+Hackathon Participation: Yes
+
+MINI PROJECTS
+
+Mini Project 1 – House Price Prediction
+
+Built a regression model using Python and Scikit-learn.
+
+Mini Project 2 – Student Performance Prediction
+
+Created a machine-learning model to analyze academic performance.
+
+Mini Project 3 – Face Detection
+
+Built a face-detection application using OpenCV.
+
+Mini Projects: 3
+
+SOFT SKILLS
+
+Communication
+Teamwork
+Leadership
+Problem Solving
+Time Management
+Presentation Skills
+Public Speaking
+
+Communication Skill Rating: 4.5 / 5
+
+ACHIEVEMENTS
+
+Participated in multiple technical hackathons.
+
+Completed several AI and machine-learning projects.
+
+Built and deployed machine-learning applications.
+
+Maintained an active GitHub project portfolio.
+
+Participated in technical workshops and coding events.
+
+AREAS OF INTEREST
+
+Artificial Intelligence
+Machine Learning
+Deep Learning
+Computer Vision
+Data Science
+Software Development
+Cloud Computing
+
+LANGUAGES
+
+English
+Kannada
+Hindi
+
+GITHUB PROJECTS
+
+Student Placement Prediction
+
+AI Resume Analyzer
+
+Computer Vision Object Detection
+
+Student Management System
+
+Machine Learning Projects
+
+DECLARATION
+
+I hereby declare that the information provided above is true and correct to the best of my knowledge.
+
+Arjun Kumar
